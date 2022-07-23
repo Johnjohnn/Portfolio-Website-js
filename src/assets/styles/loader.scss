@@ -49,5 +49,12 @@ svg{
       left: 50%;
       transform: translateX(-50%);
       background: #ccc;
+      border-radius: 2px;
+      &--inner {
+        height: 100%;
+        width: 50%;
+        border-radius: 2px;
+        background: #6cff8d;
+      }
     }
 }
