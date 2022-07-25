@@ -41,9 +41,16 @@ svg{
         border: 3px solid #6cff8d;
         border-top: 3px solid #6cff8d;
         border-bottom: 3px solid #6cff8d;
-        
+       @media (max-width:600px) {
+        width: 90vw;
+       }
+       @media (max-width:335px) {
+       font-size: 17px;
+       }
     }
     &__bar {
+      width: 90%;
+      height: 10px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -52,7 +59,7 @@ svg{
       border-radius: 2px;
       &--inner {
         height: 100%;
-        width: 50%;
+        width: 0%;
         border-radius: 2px;
         background: #6cff8d;
       }
@@ -108,4 +115,16 @@ padding: 10px;
   color: #6cff8d;
 }
     }
+  &__width_animation{
+    animation: width_animation 1s forwards;
+  @keyframes width_animation {
+ 
+    0% {
+      width: 85%;
+    }
+    100% {
+      width: 280px;
+    }
+  }
+  }
 }
