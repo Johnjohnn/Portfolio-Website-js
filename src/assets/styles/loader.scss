@@ -83,5 +83,29 @@ svg{
           }
         }
       }
+      &--border{
+        width: 85%;
+        height: 1px;
+        background-color: #6cff8d;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%);
+      }
+    }
+    &__counter {
+position: absolute;
+top: 70%;
+left: 0;
+color: #fff;
+font-size: 20px;
+width: 100%;
+display:flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px;
+&--number {
+  color: #6cff8d;
+}
     }
 }
