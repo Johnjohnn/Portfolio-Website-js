@@ -21,6 +21,15 @@ canvas,
 svg {
   max-width: 100%;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
   box-sizing: border-box;
@@ -57,6 +66,7 @@ svg {
   display: grid;
   place-items: center;
   font-family: "Orbiton", sans-serif;
+  display: none;
 }
 .loading__box {
   position: relative;
@@ -169,6 +179,28 @@ svg {
   background: #111;
   color: #fff;
   overflow: hidden;
+}
+
+.header {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header__wrap {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 60vw;
+}
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.header__left li {
+  font-size: 18px;
 }
 
 /*# sourceMappingURL=/config.0874d187.css.map */

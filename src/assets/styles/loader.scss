@@ -34,6 +34,7 @@ svg{
     display: grid;
     place-items: center;
     font-family: "Orbiton", sans-serif;
+    display: none;
     &__box {
         position: relative;
         width: 500px;
