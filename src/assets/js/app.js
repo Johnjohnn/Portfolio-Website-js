@@ -48,7 +48,7 @@ if (i===101) {
        delay: 2,
        duration:2,
        background: "transparent",
-       opacity: 0,
+       opacity: 0.5,
     });
 }
 },20)
