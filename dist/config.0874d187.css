@@ -202,6 +202,27 @@ svg {
 .header__left li {
   font-size: 18px;
 }
+@media (max-width: 1200px) {
+  .header__wrap {
+    width: 100vw;
+  }
+}
+@media (max-width: 650px) {
+  .header__sm {
+    display: none;
+  }
+}
+@media (max-width: 370px) {
+  .header__left {
+    left: 36%;
+  }
+  .header__wrap {
+    width: 100vw;
+  }
+  .header .coolLink[data-text=Home] {
+    display: none;
+  }
+}
 
 .centered_link {
   position: absolute;
@@ -295,9 +316,10 @@ svg {
 .coolButton:hover:after {
   transform: translate3d(0, -5px, 0);
 }
-@media (max-width: 1200xp) {
+@media (max-width: 800xp) {
   .coolButton__wrap {
-    width: 100vw;
+    transform: scale3d(0.7, 0.7, 0.7);
+    font-size: 23px;
   }
 }
 
