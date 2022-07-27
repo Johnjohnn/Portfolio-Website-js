@@ -35,3 +35,27 @@
     left: 10%;
     cursor: pointer;
 }
+@media (max-width:1200xp) {
+    &__wrap {
+      width: 100vw;
+    } 
+ 
+  }
+  @media (max-width:650xp) {
+    &__sm {
+     display: none;
+    } 
+ 
+  }
+  @media (max-width:370xp) {
+    &__left {
+        left:36%
+    }
+    &__wrap {
+        width: 100vw;
+      } 
+    .coolLink[data-text="Home"]{
+     display: none;
+    } 
+ 
+  }
