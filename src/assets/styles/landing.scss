@@ -53,10 +53,13 @@
       }
 
 }
-.centered_link {
+
+.socials {
     position: absolute;
-    font-size: 40px;
-    top:40px;
-    left: 10%;
-    cursor: pointer;
-}
+    left:50%;
+    transform: translateX(-50%);
+    bottom: 10rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }

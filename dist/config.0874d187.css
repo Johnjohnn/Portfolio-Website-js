@@ -224,12 +224,14 @@ svg {
   }
 }
 
-.centered_link {
+.socials {
   position: absolute;
-  font-size: 40px;
-  top: 40px;
-  left: 10%;
-  cursor: pointer;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .coolLink {
   position: relative;
@@ -320,6 +322,17 @@ svg {
   .coolButton__wrap {
     transform: scale3d(0.7, 0.7, 0.7);
     font-size: 23px;
+  }
+}
+
+.coloredIcon {
+  color: #fff;
+  font-size: 4rem;
+  animation: coloredIcon 0.5s infinite;
+}
+@keyframes coloredIcon {
+  0% {
+    text-shadow: 5px 4px red, -5px -6px blue;
   }
 }
 

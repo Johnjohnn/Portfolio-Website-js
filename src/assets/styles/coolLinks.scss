@@ -96,3 +96,15 @@ transform-origin: left;
         } 
     }
 }
+
+.coloredIcon {
+   color: #fff;
+   font-size: 4rem; 
+   animation: coloredIcon 0.5s infinite;
+   @keyframes coloredIcon {
+    0% {
+        text-shadow: 5px 4px red, -5px -6px blue
+    }
+   }
+}
+
