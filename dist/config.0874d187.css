@@ -231,7 +231,7 @@ svg {
   bottom: 10rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 3rem;
 }
 .coolLink {
   position: relative;
@@ -328,6 +328,8 @@ svg {
 .coloredIcon {
   color: #fff;
   font-size: 4rem;
+}
+.coloredIcon:hover {
   animation: coloredIcon 0.5s infinite;
 }
 @keyframes coloredIcon {
