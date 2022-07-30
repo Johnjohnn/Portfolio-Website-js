@@ -179,6 +179,7 @@ svg {
   background: #111;
   color: #fff;
   overflow: hidden;
+  background-image: url("/images.c4242fc2.");
 }
 
 .header {
@@ -228,7 +229,7 @@ svg {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 10rem;
+  bottom: 20rem;
   display: flex;
   align-items: center;
   gap: 3rem;

@@ -199,7 +199,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"assets/styles/coolLinks.scss":[function(require,module,exports) {
+},{"./..\\images":[["images.c4242fc2.","assets/images"],"assets/images"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"assets/styles/coolLinks.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
