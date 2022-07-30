@@ -49,6 +49,7 @@ if (i===101) {
        duration:2,
        background: "transparent",
        opacity: 0.5,
+       zIndex:1,
     });
 }
 },20)

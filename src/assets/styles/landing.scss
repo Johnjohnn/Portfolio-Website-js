@@ -1,3 +1,4 @@
+
 .landing {
     position: relative;
     width: 100%;
@@ -6,12 +7,15 @@
     color: #fff;
     overflow: hidden;
     background-image: url("../images/shapes/5.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .header {
     position: absolute; 
     top: 1rem;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 2;
     &__wrap {
         padding: 10px;
         display: flex;
@@ -63,6 +67,7 @@
     display: flex;
     align-items: center;
     gap: 3rem;
+    z-index: 2;
   }
   .scrollDown {
     position: absolute;
@@ -131,4 +136,21 @@
       }
     }
   }
-  
+  .intro {
+      position: absolute;
+      top: 20%;
+      left: 5rem;
+      width: 100%;
+      height: 60%;
+      z-index: 2;
+      color: #fff;
+      h4{
+        font-size: 3rem;
+        font-family: 'Karmatic Arcade', sans-serif;
+      }
+      h1{
+        font-size: 4rem;
+        font-family: 'Cute Be Special', sans-serif;
+      }
+    
+  }

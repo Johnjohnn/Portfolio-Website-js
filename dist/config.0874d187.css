@@ -66,7 +66,6 @@ svg {
   display: grid;
   place-items: center;
   font-family: "Orbiton", sans-serif;
-  display: none;
 }
 .loading__box {
   position: relative;
@@ -179,7 +178,9 @@ svg {
   background: #111;
   color: #fff;
   overflow: hidden;
-  background-image: url("/images.c4242fc2.");
+  background-image: url("/5.dc313c63.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .header {
@@ -187,6 +188,7 @@ svg {
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 2;
 }
 .header__wrap {
   padding: 10px;
@@ -233,6 +235,7 @@ svg {
   display: flex;
   align-items: center;
   gap: 3rem;
+  z-index: 2;
 }
 
 .scrollDown {
@@ -300,6 +303,24 @@ svg {
   100% {
     opacity: 1;
   }
+}
+
+.intro {
+  position: absolute;
+  top: 20%;
+  left: 5rem;
+  width: 100%;
+  height: 60%;
+  z-index: 2;
+  color: #fff;
+}
+.intro h4 {
+  font-size: 3rem;
+  font-family: "Karmatic Arcade", sans-serif;
+}
+.intro h1 {
+  font-size: 4rem;
+  font-family: "Cute Be Special", sans-serif;
 }
 .coolLink {
   position: relative;

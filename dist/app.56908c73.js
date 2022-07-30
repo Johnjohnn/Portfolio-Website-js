@@ -5926,7 +5926,8 @@ var numberInterval = setInterval(function () {
       delay: 2,
       duration: 2,
       background: "transparent",
-      opacity: 0.5
+      opacity: 0.5,
+      zIndex: 1
     });
   }
 }, 20);
@@ -5958,7 +5959,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61870" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51810" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
