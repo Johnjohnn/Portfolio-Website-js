@@ -426,5 +426,30 @@ svg {
     text-shadow: 5px 4px red, -5px -6px blue;
   }
 }
+.skills {
+  position: relative;
+  font-size: 4rem;
+  height: 300px;
+  background-color: yellow;
+  overflow: hidden;
+  padding-top: 1rem;
+}
+.skills__header {
+  font-weight: 600;
+  text-align: center;
+  font-family: "Karmatic Arcade", sans-serif;
+}
+.skills__text {
+  position: absolute;
+  white-space: nowrap;
+}
+.skills__text--left {
+  left: 0;
+  top: 9rem;
+}
+.skills__text--right {
+  right: 0;
+  top: 19rem;
+}
 
 /*# sourceMappingURL=/config.0874d187.css.map */

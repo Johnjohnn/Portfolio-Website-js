@@ -1,0 +1,25 @@
+.skills {
+    position: relative;
+    font-size: 4rem;
+    height: 300px;
+    background-color: yellow;
+    overflow: hidden;
+    padding-top: 1rem;
+    &__header {
+        font-weight: 600;
+        text-align: center;
+        font-family: 'Karmatic Arcade', sans-serif;
+    }
+    &__text {
+        position: absolute;
+        white-space: nowrap;
+        &--left {
+            left: 0;
+            top: 9rem;
+        }
+        &--right {
+            right: 0;
+            top: 19rem;
+        }
+    }
+}
