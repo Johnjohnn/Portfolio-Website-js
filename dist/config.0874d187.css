@@ -66,6 +66,7 @@ svg {
   display: grid;
   place-items: center;
   font-family: "Orbiton", sans-serif;
+  display: none;
 }
 .loading__box {
   position: relative;
