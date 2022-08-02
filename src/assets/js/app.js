@@ -1,3 +1,4 @@
+import Swiper from "swiper";
 import gsap from "gsap";
 const bar = document.querySelector(".loading__bar--inner");
 const number = document.querySelector(".loading__counter--number")
@@ -54,4 +55,11 @@ if (i===101) {
 }
 },20)
 
-
+var swiper = new Swiper(".swiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
