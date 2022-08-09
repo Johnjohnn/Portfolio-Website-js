@@ -1188,5 +1188,80 @@ button.swiper-pagination-bullet {
   backface-visibility: hidden;
   overflow: hidden;
 }
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+.review {
+  position: relative;
+  display: flex;
+  font-size: 16px;
+  padding: 5px;
+}
+.review__card {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+}
+.reviewsvg {
+  width: 30px;
+  fill: red;
+}
+.review__topborder {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+}
+.review__text span {
+  font-size: 30px;
+  font-weight: 600;
+  color: red;
+}
+.review__img {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 35px;
+}
+.review__profile {
+  position: absolute;
+  left: 5rem;
+  bottom: -1.5rem;
+  display: flex;
+  flex-direction: column;
+}
 
 /*# sourceMappingURL=/config.0874d187.css.map */

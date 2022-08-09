@@ -1,0 +1,47 @@
+@import "./base.scss";
+
+
+.review {
+position: relative;
+display: flex;
+font-size: 16px;
+padding: 5px;
+&__card {
+    position: relative;
+    width: 100%;
+    padding: 2rem 0;
+    display: flex;
+}
+&svg{
+    width: 30px;
+    fill: red;
+}
+&__topborder {
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+}
+&__text {
+    span {
+        font-size: 30px;
+        font-weight: 600;
+        color: red;
+    }
+} 
+&__img {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 35px;
+}
+&__profile {
+    position: absolute;
+    left: 5rem;
+    bottom: -1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+}
