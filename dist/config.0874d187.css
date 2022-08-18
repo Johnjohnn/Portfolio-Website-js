@@ -427,6 +427,70 @@ svg {
     text-shadow: 5px 4px red, -5px -6px blue;
   }
 }
+
+.coolCircleEyeButton {
+  position: relative;
+  display: inline-block;
+}
+.coolCircleEyeButton .textcircle {
+  display: block;
+  width: 250px;
+  animation: rotate 5s linear infinite;
+}
+.coolCircleEyeButton .textcircle text {
+  font-size: 30px;
+  text-transform: uppercase;
+  fill: #000;
+}
+.coolCircleEyeButton:hover text {
+  font-weight: 600;
+}
+.coolCircleEyeButton:hover .eye__inner,
+.coolCircleEyeButton:hover .eye__iris,
+.coolCircleEyeButton:hover .eye__lashes-up {
+  animation: hide 2s step-end infinite;
+}
+@keyframes hide {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+}
+.coolCircleEyeButton:hover .eye__lashes-down {
+  animation: show 2s step-end infinite;
+}
+@keyframes show {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.eye {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.eye__outer, .eye__inner, .eye__lashes-up, .eye__lashes-down {
+  stroke: #000;
+  fill: none;
+  stroke-width: 1.5px;
+}
+.eye__lashes-down {
+  opacity: 0;
+}
 .skills {
   position: relative;
   font-size: 4rem;
@@ -510,6 +574,29 @@ svg {
   font-size: 3vw;
   font-family: sans-serif;
   align-items: center;
+  font-weight: 400;
+}
+.project__img {
+  position: relative;
+  width: 100vw;
+  height: 700px;
+}
+.project__img img {
+  width: 60vw;
+  height: 600px;
+  object-fit: cover;
+  position: absolute;
+  right: 10vw;
+  top: 3rem;
+}
+.project__links {
+  padding-top: 3rem;
+}
+.project__links button::before {
+  background-color: black;
+}
+.project__links button::after {
+  display: none;
 }
 
 /*# sourceMappingURL=/config.0874d187.css.map */
