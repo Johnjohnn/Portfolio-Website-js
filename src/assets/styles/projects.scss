@@ -53,5 +53,34 @@
             }
         }
     }
-
+    &__tags{
+      position: absolute;
+      bottom: 4rem;
+      left: 3rem;
+      font-size: 3rem;
+      display: flex;
+      flex-direction: column;  
+      gap: 1rem;
+    }
+    .coolFunnyLink {
+        position: relative;
+        font-family: sans-serif;
+        svg{
+            position: absolute;
+            bottom: 1;
+            right:0;
+            stroke-width: 3px;
+            path{
+                stroke-dasharray: 1;
+                stroke-dashoffset: 1;
+                transition: stroke-dashoffset 0.6s cubic-bezier(0.7,0,0.3,1);
+            }
+        }
+        &:hover{
+           svg path{
+            stroke-dashoffset: 0;
+            transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
+           }
+        }
+    }
 }

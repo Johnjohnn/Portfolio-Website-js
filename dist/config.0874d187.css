@@ -598,5 +598,33 @@ svg {
 .project__links button::after {
   display: none;
 }
+.project__tags {
+  position: absolute;
+  bottom: 4rem;
+  left: 3rem;
+  font-size: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.project .coolFunnyLink {
+  position: relative;
+  font-family: sans-serif;
+}
+.project .coolFunnyLink svg {
+  position: absolute;
+  bottom: 1;
+  right: 0;
+  stroke-width: 3px;
+}
+.project .coolFunnyLink svg path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.project .coolFunnyLink:hover svg path {
+  stroke-dashoffset: 0;
+  transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
+}
 
 /*# sourceMappingURL=/config.0874d187.css.map */
