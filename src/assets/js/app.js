@@ -55,11 +55,12 @@ if (i===101) {
 }
 },20)
 
-var swiper = new Swiper(".swiper", {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-  });
+
+const questions = [...document.querySelectorAll(".question")];
+questions.map((question)=> {
+let q_text = question.querySelector("h3");
+q_text.addEventListener("click" ,()=> {
+    questions.filter((q) => q !== question).map((q) =>q.classList.remove("open"));
+    question.classList.toggle("open");
+})
+})

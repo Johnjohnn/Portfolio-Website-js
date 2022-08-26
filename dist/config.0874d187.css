@@ -711,6 +711,7 @@ svg {
   color: #0f0f0f;
   padding-left: 40px;
   transition: all 0.2s ease-in-out;
+  display: none;
 }
 .faq .question__status {
   width: 26px;
