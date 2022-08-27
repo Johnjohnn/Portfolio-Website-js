@@ -738,6 +738,7 @@ svg {
 }
 .contact {
   position: relative;
+  overflow: hidden;
   background: linear-gradient(to right, #f3e5ce, #f4deb7, #f3e4ce);
   font-family: sans-serif;
 }
@@ -780,6 +781,7 @@ svg {
   outline: none;
 }
 .form__flex .coolButton {
+  width: 18rem;
   font-weight: 900;
   font-size: 20px;
 }
@@ -788,6 +790,41 @@ svg {
 }
 .form__flex:after {
   display: none;
+}
+
+@media (max-width: 900px) {
+  .form__flex {
+    flex-direction: column;
+  }
+  .form__flex textarea {
+    font-size: 4vw;
+  }
+  .form__info {
+    font-size: 4vw;
+  }
+  .form__info input {
+    font-size: 4vw;
+  }
+}
+@media (max-width: 800px) {
+  .contact .coolButton {
+    transform: scale3d(1, 1, 1);
+    font-size: 19px;
+  }
+}
+@media (max-width: 620px) {
+  .form__info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .form__info input {
+    font-size: 5vw;
+    width: 100%;
+  }
+  .form__flex textarea {
+    width: 100%;
+    font-size: 5vw;
+  }
 }
 
 /*# sourceMappingURL=/config.0874d187.css.map */

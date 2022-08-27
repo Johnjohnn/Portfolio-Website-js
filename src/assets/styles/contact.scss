@@ -1,6 +1,7 @@
 .contact {
     position: relative;
-    background: linear-gradient(to right,#f3e5ce,#f4deb7,#f3e4ce);
+    overflow: hidden;
+       background: linear-gradient(to right,#f3e5ce,#f4deb7,#f3e4ce);
     font-family: sans-serif;
     &__header {
         margin-bottom: 3rem;
@@ -45,6 +46,7 @@
             }
         }
         .coolButton {
+            width:18rem;
             font-weight: 900;
             font-size: 20px;
         }
@@ -55,4 +57,46 @@
             display:none;
         }
         }
+}
+@media (max-width: 900px){
+    .form{
+       &__flex {
+        flex-direction: column;
+        textarea{
+            font-size: 4vw;
+        }
+       } 
+       &__info {
+        font-size: 4vw;
+        input{
+            font-size: 4vw;
+        }
+       }
+    }
+}
+@media(max-width:800px){
+   .contact .coolButton {
+    transform: scale3d(1, 1, 1,);
+    font-size: 19px;
+   } 
+}
+@media (max-width: 620px){
+    .form{
+        &__info {
+            flex-direction: column;
+            align-items: flex-start;
+            input {
+                font-size: 5vw;
+                width: 100%;
+            }
+        }
+        &__flex{
+           textarea {
+            width: 100%;
+            font-size: 5vw;
+           }
+        }
+    
+    }
+
 }
