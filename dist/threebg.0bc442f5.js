@@ -35833,23 +35833,79 @@ if (typeof window !== 'undefined') {
     window.__THREE__ = REVISION;
   }
 }
-},{}],"assets/js/threebg.js":[function(require,module,exports) {
+},{}],"assets/images/avatars/7.jpg":[function(require,module,exports) {
+module.exports = "/7.18a55e4d.jpg";
+},{}],"assets/images/avatars/10.jpg":[function(require,module,exports) {
+module.exports = "/10.a74728e2.jpg";
+},{}],"assets/images/avatars/189.jpg":[function(require,module,exports) {
+module.exports = "/189.7a47bd15.jpg";
+},{}],"assets/images/avatars/215.jpg":[function(require,module,exports) {
+module.exports = "/215.d28157d1.jpg";
+},{}],"assets/images/avatars/216.jpg":[function(require,module,exports) {
+module.exports = "/216.ba9f39c8.jpg";
+},{}],"assets/images/avatars/219.jpg":[function(require,module,exports) {
+module.exports = "/219.4ef4e500.jpg";
+},{}],"assets/js/images.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _ = _interopRequireDefault(require("../images/avatars/7.jpg"));
+
+var _2 = _interopRequireDefault(require("../images/avatars/10.jpg"));
+
+var _3 = _interopRequireDefault(require("../images/avatars/189.jpg"));
+
+var _4 = _interopRequireDefault(require("../images/avatars/215.jpg"));
+
+var _5 = _interopRequireDefault(require("../images/avatars/216.jpg"));
+
+var _6 = _interopRequireDefault(require("../images/avatars/219.jpg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const images = {
+  bg1: _.default,
+  bg2: _2.default,
+  bg3: _3.default,
+  bg4: _4.default,
+  bg5: _5.default,
+  bg6: _6.default
+};
+var _default = images;
+exports.default = _default;
+},{"../images/avatars/7.jpg":"assets/images/avatars/7.jpg","../images/avatars/10.jpg":"assets/images/avatars/10.jpg","../images/avatars/189.jpg":"assets/images/avatars/189.jpg","../images/avatars/215.jpg":"assets/images/avatars/215.jpg","../images/avatars/216.jpg":"assets/images/avatars/216.jpg","../images/avatars/219.jpg":"assets/images/avatars/219.jpg"}],"assets/js/threebg.js":[function(require,module,exports) {
 "use strict";
 
 var THREE = _interopRequireWildcard(require("three"));
+
+var _images = _interopRequireDefault(require("./images"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+const loader = new THREE.TextureLoader();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGL1Renderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-const geometry = new THREE.PlaneGeometry(10, 5);
+document.querySelector(".three-bg").appendChild(renderer.domElement); // responsive 
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+const geometry = new THREE.PlaneGeometry(18, 10);
 const material = new THREE.MeshBasicMaterial({
-  color: 0xff0000
+  color: 0xff0000,
+  map: loader.load(_images.default.bg1)
 });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -35863,7 +35919,7 @@ function animate() {
 }
 
 animate();
-},{"three":"../node_modules/three/build/three.module.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"../node_modules/three/build/three.module.js","./images":"assets/js/images.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -35891,7 +35947,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54676" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64657" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
