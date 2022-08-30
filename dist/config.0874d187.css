@@ -620,7 +620,7 @@ ul {
   .project {
     padding: 1rem;
   }
-  .project__tags {
+  .project__tags span {
     flex-direction: row;
     top: 0;
     left: 0;
@@ -640,9 +640,9 @@ ul {
   .project .coolCircleEyeButton {
     transform: translate(0);
   }
-  .project__tags {
+  .project__tags span {
     gap: 6px;
-    font-size: 14px;
+    font-size: 2rem;
   }
   .project__header span {
     font-size: 25px;
@@ -830,6 +830,23 @@ ul {
   display: flex;
   flex-direction: column;
   flex-direction: column-reverse;
+}
+
+@media (max-width: 700px) {
+  .contact__profile-col {
+    display: flex;
+    flex-direction: column;
+    flex-direction: column-reverse;
+    font-size: 2rem;
+  }
+}
+@media (max-width: 400px) {
+  .contact__profile-col {
+    display: flex;
+    flex-direction: column;
+    flex-direction: column-reverse;
+    font-size: 1.2rem;
+  }
 }
 
 /*# sourceMappingURL=/config.0874d187.css.map */

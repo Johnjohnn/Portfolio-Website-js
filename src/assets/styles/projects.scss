@@ -105,7 +105,7 @@
  .project {
     padding: 1rem;
  }   
- .project__tags {
+ .project__tags span {
     flex-direction: row;
     top: 0;
     left: 0;
@@ -125,9 +125,9 @@
 .project .coolCircleEyeButton{
     transform: translate(0);
 }
-.project__tags{
+.project__tags span{
     gap: 6px;
-    font-size: 14px;
+    font-size: 2rem;
 }
 .project__header span{
     font-size: 25px;
