@@ -14,8 +14,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "browserslist" : [
-   "defaults"
+  "browserslist": [
+    "defaults"
   ],
   "bugs": {
     "url": "https://github.com/Johnjohnn/Portfolio-Website-js/issues"
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "gsap": "^3.10.4",
+    "smooth-scrollbar": "^8.7.5",
     "swiper": "^8.3.2",
     "three": "^0.143.0"
   }

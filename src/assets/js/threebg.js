@@ -1,4 +1,4 @@
-import { Thumbs } from "swiper";
+
 import * as THREE from "three";
 import images from "./images"
 const loader = new THREE.TextureLoader();
@@ -34,8 +34,12 @@ function animate(){
     for( let i = 0; i < count; i++) {
      const x = geometry.attributes.position.getX(i);
      const y = geometry.attributes.position.getY(i);
+// Animations
+const anim1 =  0.75 * Math.sin(x * 2 + time * 0.7 );
+const anim2 =  0.75 * Math.sin(x + time * 0.7 );
+const anim3 =  0.75 * Math.sin(y * 15 + time * 0.7 );
 
-     geometry.attributes.position.setZ(i, 0.2 * Math.sin(x * time * .6));
+     geometry.attributes.position.setZ(i, anim1 + anim2 + anim3);
      geometry.computeVertexNormals();
      geometry.attributes.position.needsUpdate =  true;
     }
