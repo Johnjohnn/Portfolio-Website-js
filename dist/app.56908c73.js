@@ -6910,10 +6910,10 @@ var store = require('../internals/shared-store');
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.25.0',
+  version: '3.25.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2022 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.25.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.25.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -8229,7 +8229,14 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
   return methods;
 };
 
-},{"../internals/export":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/export.js","../internals/function-call":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-call.js","../internals/is-pure":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-pure.js","../internals/function-name":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-name.js","../internals/is-callable":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-callable.js","../internals/iterator-create-constructor":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-create-constructor.js","../internals/object-get-prototype-of":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-get-prototype-of.js","../internals/object-set-prototype-of":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-set-prototype-of.js","../internals/set-to-string-tag":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/set-to-string-tag.js","../internals/create-non-enumerable-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-non-enumerable-property.js","../internals/define-built-in":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/define-built-in.js","../internals/well-known-symbol":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/well-known-symbol.js","../internals/iterators":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators.js","../internals/iterators-core":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators-core.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/modules/es.array.iterator.js":[function(require,module,exports) {
+},{"../internals/export":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/export.js","../internals/function-call":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-call.js","../internals/is-pure":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-pure.js","../internals/function-name":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-name.js","../internals/is-callable":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-callable.js","../internals/iterator-create-constructor":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-create-constructor.js","../internals/object-get-prototype-of":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-get-prototype-of.js","../internals/object-set-prototype-of":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-set-prototype-of.js","../internals/set-to-string-tag":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/set-to-string-tag.js","../internals/create-non-enumerable-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-non-enumerable-property.js","../internals/define-built-in":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/define-built-in.js","../internals/well-known-symbol":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/well-known-symbol.js","../internals/iterators":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators.js","../internals/iterators-core":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators-core.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-iter-result-object.js":[function(require,module,exports) {
+// `CreateIterResultObject` abstract operation
+// https://tc39.es/ecma262/#sec-createiterresultobject
+module.exports = function (value, done) {
+  return { value: value, done: done };
+};
+
+},{}],"../node_modules/smooth-scrollbar/node_modules/core-js/modules/es.array.iterator.js":[function(require,module,exports) {
 'use strict';
 var toIndexedObject = require('../internals/to-indexed-object');
 var addToUnscopables = require('../internals/add-to-unscopables');
@@ -8237,6 +8244,7 @@ var Iterators = require('../internals/iterators');
 var InternalStateModule = require('../internals/internal-state');
 var defineProperty = require('../internals/object-define-property').f;
 var defineIterator = require('../internals/iterator-define');
+var createIterResultObject = require('../internals/create-iter-result-object');
 var IS_PURE = require('../internals/is-pure');
 var DESCRIPTORS = require('../internals/descriptors');
 
@@ -8270,11 +8278,11 @@ module.exports = defineIterator(Array, 'Array', function (iterated, kind) {
   var index = state.index++;
   if (!target || index >= target.length) {
     state.target = undefined;
-    return { value: undefined, done: true };
+    return createIterResultObject(undefined, true);
   }
-  if (kind == 'keys') return { value: index, done: false };
-  if (kind == 'values') return { value: target[index], done: false };
-  return { value: [index, target[index]], done: false };
+  if (kind == 'keys') return createIterResultObject(index, false);
+  if (kind == 'values') return createIterResultObject(target[index], false);
+  return createIterResultObject([index, target[index]], false);
 }, 'values');
 
 // argumentsList[@@iterator] is %ArrayProto_values%
@@ -8292,7 +8300,7 @@ if (!IS_PURE && DESCRIPTORS && values.name !== 'values') try {
   defineProperty(values, 'name', { value: 'values' });
 } catch (error) { /* empty */ }
 
-},{"../internals/to-indexed-object":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/to-indexed-object.js","../internals/add-to-unscopables":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/add-to-unscopables.js","../internals/iterators":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js","../internals/object-define-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-define-property.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js","../internals/is-pure":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-pure.js","../internals/descriptors":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/descriptors.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-property.js":[function(require,module,exports) {
+},{"../internals/to-indexed-object":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/to-indexed-object.js","../internals/add-to-unscopables":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/add-to-unscopables.js","../internals/iterators":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterators.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js","../internals/object-define-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-define-property.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js","../internals/create-iter-result-object":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-iter-result-object.js","../internals/is-pure":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-pure.js","../internals/descriptors":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/descriptors.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-property.js":[function(require,module,exports) {
 'use strict';
 var toPropertyKey = require('../internals/to-property-key');
 var definePropertyModule = require('../internals/object-define-property');
@@ -8888,6 +8896,7 @@ var anInstance = require('../internals/an-instance');
 var isNullOrUndefined = require('../internals/is-null-or-undefined');
 var iterate = require('../internals/iterate');
 var defineIterator = require('../internals/iterator-define');
+var createIterResultObject = require('../internals/create-iter-result-object');
 var setSpecies = require('../internals/set-species');
 var DESCRIPTORS = require('../internals/descriptors');
 var fastKey = require('../internals/internal-metadata').fastKey;
@@ -9070,12 +9079,12 @@ module.exports = {
       if (!state.target || !(state.last = entry = entry ? entry.next : state.state.first)) {
         // or finish the iteration
         state.target = undefined;
-        return { value: undefined, done: true };
+        return createIterResultObject(undefined, true);
       }
       // return step by kind
-      if (kind == 'keys') return { value: entry.key, done: false };
-      if (kind == 'values') return { value: entry.value, done: false };
-      return { value: [entry.key, entry.value], done: false };
+      if (kind == 'keys') return createIterResultObject(entry.key, false);
+      if (kind == 'values') return createIterResultObject(entry.value, false);
+      return createIterResultObject([entry.key, entry.value], false);
     }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
 
     // `{ Map, Set }.prototype[@@species]` accessors
@@ -9085,7 +9094,7 @@ module.exports = {
   }
 };
 
-},{"../internals/object-define-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-define-property.js","../internals/object-create":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-create.js","../internals/define-built-ins":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/define-built-ins.js","../internals/function-bind-context":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-bind-context.js","../internals/an-instance":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/an-instance.js","../internals/is-null-or-undefined":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-null-or-undefined.js","../internals/iterate":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterate.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js","../internals/set-species":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/set-species.js","../internals/descriptors":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/descriptors.js","../internals/internal-metadata":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-metadata.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/modules/es.map.constructor.js":[function(require,module,exports) {
+},{"../internals/object-define-property":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-define-property.js","../internals/object-create":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/object-create.js","../internals/define-built-ins":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/define-built-ins.js","../internals/function-bind-context":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/function-bind-context.js","../internals/an-instance":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/an-instance.js","../internals/is-null-or-undefined":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/is-null-or-undefined.js","../internals/iterate":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterate.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js","../internals/create-iter-result-object":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-iter-result-object.js","../internals/set-species":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/set-species.js","../internals/descriptors":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/descriptors.js","../internals/internal-metadata":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-metadata.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/modules/es.map.constructor.js":[function(require,module,exports) {
 'use strict';
 var collection = require('../internals/collection');
 var collectionStrong = require('../internals/collection-strong');
@@ -9176,6 +9185,7 @@ var charAt = require('../internals/string-multibyte').charAt;
 var toString = require('../internals/to-string');
 var InternalStateModule = require('../internals/internal-state');
 var defineIterator = require('../internals/iterator-define');
+var createIterResultObject = require('../internals/create-iter-result-object');
 
 var STRING_ITERATOR = 'String Iterator';
 var setInternalState = InternalStateModule.set;
@@ -9196,13 +9206,13 @@ defineIterator(String, 'String', function (iterated) {
   var string = state.string;
   var index = state.index;
   var point;
-  if (index >= string.length) return { value: undefined, done: true };
+  if (index >= string.length) return createIterResultObject(undefined, true);
   point = charAt(string, index);
   state.index += point.length;
-  return { value: point, done: false };
+  return createIterResultObject(point, false);
 });
 
-},{"../internals/string-multibyte":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/string-multibyte.js","../internals/to-string":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/to-string.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/internals/path.js":[function(require,module,exports) {
+},{"../internals/string-multibyte":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/string-multibyte.js","../internals/to-string":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/to-string.js","../internals/internal-state":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/internal-state.js","../internals/iterator-define":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/iterator-define.js","../internals/create-iter-result-object":"../node_modules/smooth-scrollbar/node_modules/core-js/internals/create-iter-result-object.js"}],"../node_modules/smooth-scrollbar/node_modules/core-js/internals/path.js":[function(require,module,exports) {
 
 var global = require('../internals/global');
 
@@ -9802,13 +9812,46 @@ require("core-js/es/weak-map");
 require("core-js/es/array/from");
 
 require("core-js/es/object/assign");
-},{"core-js/es/map":"../node_modules/smooth-scrollbar/node_modules/core-js/es/map/index.js","core-js/es/set":"../node_modules/smooth-scrollbar/node_modules/core-js/es/set/index.js","core-js/es/weak-map":"../node_modules/smooth-scrollbar/node_modules/core-js/es/weak-map/index.js","core-js/es/array/from":"../node_modules/smooth-scrollbar/node_modules/core-js/es/array/from.js","core-js/es/object/assign":"../node_modules/smooth-scrollbar/node_modules/core-js/es/object/assign.js"}],"../node_modules/lodash-es/_baseClamp.js":[function(require,module,exports) {
-"use strict";
+},{"core-js/es/map":"../node_modules/smooth-scrollbar/node_modules/core-js/es/map/index.js","core-js/es/set":"../node_modules/smooth-scrollbar/node_modules/core-js/es/set/index.js","core-js/es/weak-map":"../node_modules/smooth-scrollbar/node_modules/core-js/es/weak-map/index.js","core-js/es/array/from":"../node_modules/smooth-scrollbar/node_modules/core-js/es/array/from.js","core-js/es/object/assign":"../node_modules/smooth-scrollbar/node_modules/core-js/es/object/assign.js"}],"../node_modules/lodash.clamp/index.js":[function(require,module,exports) {
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
 
 /**
  * The base implementation of `_.clamp` which doesn't coerce arguments.
@@ -9824,81 +9867,12 @@ function baseClamp(number, lower, upper) {
     if (upper !== undefined) {
       number = number <= upper ? number : upper;
     }
-
     if (lower !== undefined) {
       number = number >= lower ? number : lower;
     }
   }
-
   return number;
 }
-
-var _default = baseClamp;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/_trimmedEndIndex.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/** Used to match a single whitespace character. */
-var reWhitespace = /\s/;
-/**
- * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
- * character of `string`.
- *
- * @private
- * @param {string} string The string to inspect.
- * @returns {number} Returns the index of the last non-whitespace character.
- */
-
-function trimmedEndIndex(string) {
-  var index = string.length;
-
-  while (index-- && reWhitespace.test(string.charAt(index))) {}
-
-  return index;
-}
-
-var _default = trimmedEndIndex;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/_baseTrim.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _trimmedEndIndex = _interopRequireDefault(require("./_trimmedEndIndex.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Used to match leading whitespace. */
-var reTrimStart = /^\s+/;
-/**
- * The base implementation of `_.trim`.
- *
- * @private
- * @param {string} string The string to trim.
- * @returns {string} Returns the trimmed string.
- */
-
-function baseTrim(string) {
-  return string ? string.slice(0, (0, _trimmedEndIndex.default)(string) + 1).replace(reTrimStart, '') : string;
-}
-
-var _default = baseTrim;
-exports.default = _default;
-},{"./_trimmedEndIndex.js":"../node_modules/lodash-es/_trimmedEndIndex.js"}],"../node_modules/lodash-es/isObject.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
 
 /**
  * Checks if `value` is the
@@ -9927,196 +9901,8 @@ exports.default = void 0;
  */
 function isObject(value) {
   var type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
+  return !!value && (type == 'object' || type == 'function');
 }
-
-var _default = isObject;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/_freeGlobal.js":[function(require,module,exports) {
-var global = arguments[3];
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-var _default = freeGlobal;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/_root.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _freeGlobal = _interopRequireDefault(require("./_freeGlobal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-/** Used as a reference to the global object. */
-
-var root = _freeGlobal.default || freeSelf || Function('return this')();
-var _default = root;
-exports.default = _default;
-},{"./_freeGlobal.js":"../node_modules/lodash-es/_freeGlobal.js"}],"../node_modules/lodash-es/_Symbol.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _root = _interopRequireDefault(require("./_root.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Built-in value references. */
-var Symbol = _root.default.Symbol;
-var _default = Symbol;
-exports.default = _default;
-},{"./_root.js":"../node_modules/lodash-es/_root.js"}],"../node_modules/lodash-es/_getRawTag.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _Symbol = _interopRequireDefault(require("./_Symbol.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-/** Used to check objects for own properties. */
-
-var hasOwnProperty = objectProto.hasOwnProperty;
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-
-var nativeObjectToString = objectProto.toString;
-/** Built-in value references. */
-
-var symToStringTag = _Symbol.default ? _Symbol.default.toStringTag : undefined;
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
- */
-
-function getRawTag(value) {
-  var isOwn = hasOwnProperty.call(value, symToStringTag),
-      tag = value[symToStringTag];
-
-  try {
-    value[symToStringTag] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag] = tag;
-    } else {
-      delete value[symToStringTag];
-    }
-  }
-
-  return result;
-}
-
-var _default = getRawTag;
-exports.default = _default;
-},{"./_Symbol.js":"../node_modules/lodash-es/_Symbol.js"}],"../node_modules/lodash-es/_objectToString.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-
-var nativeObjectToString = objectProto.toString;
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-
-function objectToString(value) {
-  return nativeObjectToString.call(value);
-}
-
-var _default = objectToString;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/_baseGetTag.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _Symbol = _interopRequireDefault(require("./_Symbol.js"));
-
-var _getRawTag = _interopRequireDefault(require("./_getRawTag.js"));
-
-var _objectToString = _interopRequireDefault(require("./_objectToString.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-/** Built-in value references. */
-
-var symToStringTag = _Symbol.default ? _Symbol.default.toStringTag : undefined;
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-
-  return symToStringTag && symToStringTag in Object(value) ? (0, _getRawTag.default)(value) : (0, _objectToString.default)(value);
-}
-
-var _default = baseGetTag;
-exports.default = _default;
-},{"./_Symbol.js":"../node_modules/lodash-es/_Symbol.js","./_getRawTag.js":"../node_modules/lodash-es/_getRawTag.js","./_objectToString.js":"../node_modules/lodash-es/_objectToString.js"}],"../node_modules/lodash-es/isObjectLike.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
 
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -10143,27 +9929,9 @@ exports.default = void 0;
  * // => false
  */
 function isObjectLike(value) {
-  return value != null && typeof value == 'object';
+  return !!value && typeof value == 'object';
 }
 
-var _default = isObjectLike;
-exports.default = _default;
-},{}],"../node_modules/lodash-es/isSymbol.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _baseGetTag = _interopRequireDefault(require("./_baseGetTag.js"));
-
-var _isObjectLike = _interopRequireDefault(require("./isObjectLike.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
 /**
  * Checks if `value` is classified as a `Symbol` primitive or object.
  *
@@ -10181,43 +9949,11 @@ var symbolTag = '[object Symbol]';
  * _.isSymbol('abc');
  * // => false
  */
-
 function isSymbol(value) {
-  return typeof value == 'symbol' || (0, _isObjectLike.default)(value) && (0, _baseGetTag.default)(value) == symbolTag;
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
 }
 
-var _default = isSymbol;
-exports.default = _default;
-},{"./_baseGetTag.js":"../node_modules/lodash-es/_baseGetTag.js","./isObjectLike.js":"../node_modules/lodash-es/isObjectLike.js"}],"../node_modules/lodash-es/toNumber.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _baseTrim = _interopRequireDefault(require("./_baseTrim.js"));
-
-var _isObject = _interopRequireDefault(require("./isObject.js"));
-
-var _isSymbol = _interopRequireDefault(require("./isSymbol.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-/** Used to detect bad signed hexadecimal string values. */
-
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-/** Used to detect binary string values. */
-
-var reIsBinary = /^0b[01]+$/i;
-/** Used to detect octal string values. */
-
-var reIsOctal = /^0o[0-7]+$/i;
-/** Built-in method references without a dependency on `root`. */
-
-var freeParseInt = parseInt;
 /**
  * Converts `value` to a number.
  *
@@ -10241,45 +9977,26 @@ var freeParseInt = parseInt;
  * _.toNumber('3.2');
  * // => 3.2
  */
-
 function toNumber(value) {
   if (typeof value == 'number') {
     return value;
   }
-
-  if ((0, _isSymbol.default)(value)) {
+  if (isSymbol(value)) {
     return NAN;
   }
-
-  if ((0, _isObject.default)(value)) {
+  if (isObject(value)) {
     var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = (0, _isObject.default)(other) ? other + '' : other;
+    value = isObject(other) ? (other + '') : other;
   }
-
   if (typeof value != 'string') {
     return value === 0 ? value : +value;
   }
-
-  value = (0, _baseTrim.default)(value);
+  value = value.replace(reTrim, '');
   var isBinary = reIsBinary.test(value);
-  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
 }
-
-var _default = toNumber;
-exports.default = _default;
-},{"./_baseTrim.js":"../node_modules/lodash-es/_baseTrim.js","./isObject.js":"../node_modules/lodash-es/isObject.js","./isSymbol.js":"../node_modules/lodash-es/isSymbol.js"}],"../node_modules/lodash-es/clamp.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _baseClamp = _interopRequireDefault(require("./_baseClamp.js"));
-
-var _toNumber = _interopRequireDefault(require("./toNumber.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Clamps `number` within the inclusive `lower` and `upper` bounds.
@@ -10305,23 +10022,20 @@ function clamp(number, lower, upper) {
     upper = lower;
     lower = undefined;
   }
-
   if (upper !== undefined) {
-    upper = (0, _toNumber.default)(upper);
+    upper = toNumber(upper);
     upper = upper === upper ? upper : 0;
   }
-
   if (lower !== undefined) {
-    lower = (0, _toNumber.default)(lower);
+    lower = toNumber(lower);
     lower = lower === lower ? lower : 0;
   }
-
-  return (0, _baseClamp.default)((0, _toNumber.default)(number), lower, upper);
+  return baseClamp(toNumber(number), lower, upper);
 }
 
-var _default = clamp;
-exports.default = _default;
-},{"./_baseClamp.js":"../node_modules/lodash-es/_baseClamp.js","./toNumber.js":"../node_modules/lodash-es/toNumber.js"}],"../node_modules/smooth-scrollbar/decorators/range.js":[function(require,module,exports) {
+module.exports = clamp;
+
+},{}],"../node_modules/smooth-scrollbar/decorators/range.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10329,7 +10043,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.range = range;
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10350,7 +10064,7 @@ function range(min, max) {
       },
       set: function (val) {
         Object.defineProperty(this, alias, {
-          value: (0, _clamp.default)(val, min, max),
+          value: (0, _lodash.default)(val, min, max),
           enumerable: false,
           writable: true,
           configurable: true
@@ -10361,7 +10075,7 @@ function range(min, max) {
     });
   };
 }
-},{"lodash-es/clamp":"../node_modules/lodash-es/clamp.js"}],"../node_modules/smooth-scrollbar/decorators/boolean.js":[function(require,module,exports) {
+},{"lodash.clamp":"../node_modules/lodash.clamp/index.js"}],"../node_modules/smooth-scrollbar/decorators/boolean.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10387,17 +10101,63 @@ function boolean(proto, key) {
     configurable: true
   });
 }
-},{}],"../node_modules/lodash-es/now.js":[function(require,module,exports) {
-"use strict";
+},{}],"../node_modules/lodash.debounce/index.js":[function(require,module,exports) {
+var global = arguments[3];
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
 
-var _root = _interopRequireDefault(require("./_root.js"));
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeMin = Math.min;
 
 /**
  * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -10415,34 +10175,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * }, _.now());
  * // => Logs the number of milliseconds it took for the deferred invocation.
  */
-var now = function () {
-  return _root.default.Date.now();
+var now = function() {
+  return root.Date.now();
 };
 
-var _default = now;
-exports.default = _default;
-},{"./_root.js":"../node_modules/lodash-es/_root.js"}],"../node_modules/lodash-es/debounce.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _isObject = _interopRequireDefault(require("./isObject.js"));
-
-var _now = _interopRequireDefault(require("./now.js"));
-
-var _toNumber = _interopRequireDefault(require("./toNumber.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** Error message constants. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-/* Built-in method references for those with the same name as other `lodash` methods. */
-
-var nativeMax = Math.max,
-    nativeMin = Math.min;
 /**
  * Creates a debounced function that delays invoking `func` until after `wait`
  * milliseconds have elapsed since the last time the debounced function was
@@ -10497,7 +10233,6 @@ var nativeMax = Math.max,
  * // Cancel the trailing debounced invocation.
  * jQuery(window).on('popstate', debounced.cancel);
  */
-
 function debounce(func, wait, options) {
   var lastArgs,
       lastThis,
@@ -10513,19 +10248,18 @@ function debounce(func, wait, options) {
   if (typeof func != 'function') {
     throw new TypeError(FUNC_ERROR_TEXT);
   }
-
-  wait = (0, _toNumber.default)(wait) || 0;
-
-  if ((0, _isObject.default)(options)) {
+  wait = toNumber(wait) || 0;
+  if (isObject(options)) {
     leading = !!options.leading;
     maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax((0, _toNumber.default)(options.maxWait) || 0, wait) : maxWait;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
     trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
 
   function invokeFunc(time) {
     var args = lastArgs,
         thisArg = lastThis;
+
     lastArgs = lastThis = undefined;
     lastInvokeTime = time;
     result = func.apply(thisArg, args);
@@ -10534,48 +10268,49 @@ function debounce(func, wait, options) {
 
   function leadingEdge(time) {
     // Reset any `maxWait` timer.
-    lastInvokeTime = time; // Start the timer for the trailing edge.
-
-    timerId = setTimeout(timerExpired, wait); // Invoke the leading edge.
-
+    lastInvokeTime = time;
+    // Start the timer for the trailing edge.
+    timerId = setTimeout(timerExpired, wait);
+    // Invoke the leading edge.
     return leading ? invokeFunc(time) : result;
   }
 
   function remainingWait(time) {
     var timeSinceLastCall = time - lastCallTime,
         timeSinceLastInvoke = time - lastInvokeTime,
-        timeWaiting = wait - timeSinceLastCall;
-    return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
+        result = wait - timeSinceLastCall;
+
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
   }
 
   function shouldInvoke(time) {
     var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime; // Either this is the first call, activity has stopped and we're at the
+        timeSinceLastInvoke = time - lastInvokeTime;
+
+    // Either this is the first call, activity has stopped and we're at the
     // trailing edge, the system time has gone backwards and we're treating
     // it as the trailing edge, or we've hit the `maxWait` limit.
-
-    return lastCallTime === undefined || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
+      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
   }
 
   function timerExpired() {
-    var time = (0, _now.default)();
-
+    var time = now();
     if (shouldInvoke(time)) {
       return trailingEdge(time);
-    } // Restart the timer.
-
-
+    }
+    // Restart the timer.
     timerId = setTimeout(timerExpired, remainingWait(time));
   }
 
   function trailingEdge(time) {
-    timerId = undefined; // Only invoke if we have `lastArgs` which means `func` has been
-    // debounced at least once.
+    timerId = undefined;
 
+    // Only invoke if we have `lastArgs` which means `func` has been
+    // debounced at least once.
     if (trailing && lastArgs) {
       return invokeFunc(time);
     }
-
     lastArgs = lastThis = undefined;
     return result;
   }
@@ -10584,18 +10319,18 @@ function debounce(func, wait, options) {
     if (timerId !== undefined) {
       clearTimeout(timerId);
     }
-
     lastInvokeTime = 0;
     lastArgs = lastCallTime = lastThis = timerId = undefined;
   }
 
   function flush() {
-    return timerId === undefined ? result : trailingEdge((0, _now.default)());
+    return timerId === undefined ? result : trailingEdge(now());
   }
 
   function debounced() {
-    var time = (0, _now.default)(),
+    var time = now(),
         isInvoking = shouldInvoke(time);
+
     lastArgs = arguments;
     lastThis = this;
     lastCallTime = time;
@@ -10604,30 +10339,149 @@ function debounce(func, wait, options) {
       if (timerId === undefined) {
         return leadingEdge(lastCallTime);
       }
-
       if (maxing) {
         // Handle invocations in a tight loop.
-        clearTimeout(timerId);
         timerId = setTimeout(timerExpired, wait);
         return invokeFunc(lastCallTime);
       }
     }
-
     if (timerId === undefined) {
       timerId = setTimeout(timerExpired, wait);
     }
-
     return result;
   }
-
   debounced.cancel = cancel;
   debounced.flush = flush;
   return debounced;
 }
 
-var _default = debounce;
-exports.default = _default;
-},{"./isObject.js":"../node_modules/lodash-es/isObject.js","./now.js":"../node_modules/lodash-es/now.js","./toNumber.js":"../node_modules/lodash-es/toNumber.js"}],"../node_modules/smooth-scrollbar/decorators/debounce.js":[function(require,module,exports) {
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = debounce;
+
+},{}],"../node_modules/smooth-scrollbar/decorators/debounce.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10637,7 +10491,7 @@ exports.debounce = debounce;
 
 var _tslib = require("tslib");
 
-var _debounce = _interopRequireDefault(require("lodash-es/debounce"));
+var _lodash = _interopRequireDefault(require("lodash.debounce"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10654,7 +10508,7 @@ function debounce() {
       get: function () {
         if (!this.hasOwnProperty(key)) {
           Object.defineProperty(this, key, {
-            value: _debounce.default.apply(void 0, (0, _tslib.__spreadArrays)([fn], options))
+            value: _lodash.default.apply(void 0, (0, _tslib.__spreadArrays)([fn], options))
           });
         }
 
@@ -10663,7 +10517,7 @@ function debounce() {
     };
   };
 }
-},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash-es/debounce":"../node_modules/lodash-es/debounce.js"}],"../node_modules/smooth-scrollbar/decorators/index.js":[function(require,module,exports) {
+},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash.debounce":"../node_modules/lodash.debounce/index.js"}],"../node_modules/smooth-scrollbar/decorators/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10981,7 +10835,7 @@ var Tracker =
 /** @class */
 function () {
   function Tracker(touch) {
-    this.velocityMultiplier = /Android/.test(navigator.userAgent) ? window.devicePixelRatio : 1;
+    this.velocityMultiplier = window.devicePixelRatio;
     this.updateTime = Date.now();
     this.delta = {
       x: 0,
@@ -11624,7 +11478,7 @@ exports.setPosition = setPosition;
 
 var _tslib = require("tslib");
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 var _utils = require("../utils/");
 
@@ -11642,8 +11496,8 @@ function setPosition(scrollbar, x, y) {
     y = Math.round(y);
   }
 
-  x = (0, _clamp.default)(x, 0, limit.x);
-  y = (0, _clamp.default)(y, 0, limit.y); // position changed -> show track for 300ms
+  x = (0, _lodash.default)(x, 0, limit.x);
+  y = (0, _lodash.default)(y, 0, limit.y); // position changed -> show track for 300ms
 
   if (x !== offset.x) track.xAxis.show();
   if (y !== offset.y) track.yAxis.show();
@@ -11667,7 +11521,7 @@ function setPosition(scrollbar, x, y) {
     limit: (0, _tslib.__assign)({}, limit)
   };
 }
-},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash-es/clamp":"../node_modules/lodash-es/clamp.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/scrolling/scroll-to.js":[function(require,module,exports) {
+},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash.clamp":"../node_modules/lodash.clamp/index.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/scrolling/scroll-to.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11675,7 +11529,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.scrollTo = scrollTo;
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11703,8 +11557,8 @@ function scrollTo(scrollbar, x, y, duration, _a) {
 
   var startX = offset.x;
   var startY = offset.y;
-  var disX = (0, _clamp.default)(x, 0, limit.x) - startX;
-  var disY = (0, _clamp.default)(y, 0, limit.y) - startY;
+  var disX = (0, _lodash.default)(x, 0, limit.x) - startX;
+  var disY = (0, _lodash.default)(y, 0, limit.y) - startY;
   var start = Date.now();
 
   function scroll() {
@@ -11733,7 +11587,7 @@ function scrollTo(scrollbar, x, y, duration, _a) {
 function defaultEasing(t) {
   return Math.pow(t - 1, 3) + 1;
 }
-},{"lodash-es/clamp":"../node_modules/lodash-es/clamp.js"}],"../node_modules/smooth-scrollbar/scrolling/scroll-into-view.js":[function(require,module,exports) {
+},{"lodash.clamp":"../node_modules/lodash.clamp/index.js"}],"../node_modules/smooth-scrollbar/scrolling/scroll-into-view.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11741,7 +11595,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.scrollIntoView = scrollIntoView;
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11766,9 +11620,9 @@ function scrollIntoView(scrollbar, elem, _a) {
   var targetBounding = elem.getBoundingClientRect();
   if (onlyScrollIfNeeded && scrollbar.isVisible(elem)) return;
   var delta = alignToTop ? targetBounding.top - bounding.top - offsetTop : targetBounding.bottom - bounding.bottom + offsetBottom;
-  scrollbar.setMomentum(targetBounding.left - bounding.left - offsetLeft, (0, _clamp.default)(delta, -offset.y, limit.y - offset.y));
+  scrollbar.setMomentum(targetBounding.left - bounding.left - offsetLeft, (0, _lodash.default)(delta, -offset.y, limit.y - offset.y));
 }
-},{"lodash-es/clamp":"../node_modules/lodash-es/clamp.js"}],"../node_modules/smooth-scrollbar/scrolling/index.js":[function(require,module,exports) {
+},{"lodash.clamp":"../node_modules/lodash.clamp/index.js"}],"../node_modules/smooth-scrollbar/scrolling/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11997,6 +11851,7 @@ function handleTabKey(scrollbar) {
   requestAnimationFrame(function () {
     scrollbar.scrollIntoView(document.activeElement, {
       offsetTop: scrollbar.size.container.height / 2,
+      offsetLeft: scrollbar.size.container.width / 2,
       onlyScrollIfNeeded: true
     });
   });
@@ -12017,7 +11872,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.mouseHandler = mouseHandler;
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 var _utils = require("../utils/");
 
@@ -12044,12 +11899,12 @@ function mouseHandler(scrollbar) {
 
     if (direction === Direction.X) {
       var totalWidth = size.container.width + (xAxis.thumb.realSize - xAxis.thumb.displaySize);
-      return (0, _clamp.default)(clickPosition / totalWidth * size.content.width, 0, limit.x) - offset.x;
+      return (0, _lodash.default)(clickPosition / totalWidth * size.content.width, 0, limit.x) - offset.x;
     }
 
     if (direction === Direction.Y) {
       var totalHeight = size.container.height + (yAxis.thumb.realSize - yAxis.thumb.displaySize);
-      return (0, _clamp.default)(clickPosition / totalHeight * size.content.height, 0, limit.y) - offset.y;
+      return (0, _lodash.default)(clickPosition / totalHeight * size.content.height, 0, limit.y) - offset.y;
     }
 
     return 0;
@@ -12140,7 +11995,7 @@ function mouseHandler(scrollbar) {
     });
   });
 }
-},{"lodash-es/clamp":"../node_modules/lodash-es/clamp.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/resize.js":[function(require,module,exports) {
+},{"lodash.clamp":"../node_modules/lodash.clamp/index.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/resize.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12148,7 +12003,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.resizeHandler = resizeHandler;
 
-var _debounce = _interopRequireDefault(require("lodash-es/debounce"));
+var _lodash = _interopRequireDefault(require("lodash.debounce"));
 
 var _utils = require("../utils/");
 
@@ -12156,9 +12011,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function resizeHandler(scrollbar) {
   var addEvent = (0, _utils.eventScope)(scrollbar);
-  addEvent(window, 'resize', (0, _debounce.default)(scrollbar.update.bind(scrollbar), 300));
+  addEvent(window, 'resize', (0, _lodash.default)(scrollbar.update.bind(scrollbar), 300));
 }
-},{"lodash-es/debounce":"../node_modules/lodash-es/debounce.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/select.js":[function(require,module,exports) {
+},{"lodash.debounce":"../node_modules/lodash.debounce/index.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/select.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12166,7 +12021,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.selectHandler = selectHandler;
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 var _utils = require("../utils/");
 
@@ -12188,7 +12043,7 @@ function selectHandler(scrollbar) {
     var offset = scrollbar.offset,
         limit = scrollbar.limit; // DISALLOW delta transformation
 
-    scrollbar.setMomentum((0, _clamp.default)(offset.x + x, 0, limit.x) - offset.x, (0, _clamp.default)(offset.y + y, 0, limit.y) - offset.y);
+    scrollbar.setMomentum((0, _lodash.default)(offset.x + x, 0, limit.x) - offset.x, (0, _lodash.default)(offset.y + y, 0, limit.y) - offset.y);
     animationID = requestAnimationFrame(function () {
       scroll({
         x: x,
@@ -12274,7 +12129,7 @@ function calcMomentum(scrollbar, evt) {
   res.y *= 2;
   return res;
 }
-},{"lodash-es/clamp":"../node_modules/lodash-es/clamp.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/touch.js":[function(require,module,exports) {
+},{"lodash.clamp":"../node_modules/lodash.clamp/index.js","../utils/":"../node_modules/smooth-scrollbar/utils/index.js"}],"../node_modules/smooth-scrollbar/events/touch.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12487,7 +12342,7 @@ exports.scrollbarMap = exports.Scrollbar = void 0;
 
 var _tslib = require("tslib");
 
-var _clamp = _interopRequireDefault(require("lodash-es/clamp"));
+var _lodash = _interopRequireDefault(require("lodash.clamp"));
 
 var _options = require("./options");
 
@@ -12931,8 +12786,8 @@ function () {
       this._updateDebounced();
     }
 
-    var destX = (0, _clamp.default)(deltaX + offset.x, 0, limit.x);
-    var destY = (0, _clamp.default)(deltaY + offset.y, 0, limit.y);
+    var destX = (0, _lodash.default)(deltaX + offset.x, 0, limit.x);
+    var destY = (0, _lodash.default)(deltaY + offset.y, 0, limit.y);
     var res = true; // offsets are not about to change
     // `&=` operator is not allowed for boolean types
 
@@ -13000,7 +12855,7 @@ function () {
 }();
 
 exports.Scrollbar = Scrollbar;
-},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash-es/clamp":"../node_modules/lodash-es/clamp.js","./options":"../node_modules/smooth-scrollbar/options.js","./utils/":"../node_modules/smooth-scrollbar/utils/index.js","./decorators/":"../node_modules/smooth-scrollbar/decorators/index.js","./track/":"../node_modules/smooth-scrollbar/track/index.js","./geometry/":"../node_modules/smooth-scrollbar/geometry/index.js","./scrolling/":"../node_modules/smooth-scrollbar/scrolling/index.js","./plugin":"../node_modules/smooth-scrollbar/plugin.js","./events/":"../node_modules/smooth-scrollbar/events/index.js"}],"../node_modules/smooth-scrollbar/style.js":[function(require,module,exports) {
+},{"tslib":"../node_modules/tslib/tslib.es6.js","lodash.clamp":"../node_modules/lodash.clamp/index.js","./options":"../node_modules/smooth-scrollbar/options.js","./utils/":"../node_modules/smooth-scrollbar/utils/index.js","./decorators/":"../node_modules/smooth-scrollbar/decorators/index.js","./track/":"../node_modules/smooth-scrollbar/track/index.js","./geometry/":"../node_modules/smooth-scrollbar/geometry/index.js","./scrolling/":"../node_modules/smooth-scrollbar/scrolling/index.js","./plugin":"../node_modules/smooth-scrollbar/plugin.js","./events/":"../node_modules/smooth-scrollbar/events/index.js"}],"../node_modules/smooth-scrollbar/style.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13206,7 +13061,7 @@ function (_super) {
     return (0, _style.detachStyle)();
   };
 
-  SmoothScrollbar.version = "8.7.5";
+  SmoothScrollbar.version = "8.8.1";
   SmoothScrollbar.ScrollbarPlugin = _plugin.ScrollbarPlugin;
   return SmoothScrollbar;
 }(_scrollbar.Scrollbar);
@@ -13356,7 +13211,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62590" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56041" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
