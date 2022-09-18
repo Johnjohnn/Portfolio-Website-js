@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/global","loc":{"line":1,"column":21}}],"generated":{"js":"\nvar global = require('../internals/global');\n\nmodule.exports = global;\n"},"hash":"218979e3a7c48e25787faf38a46d4014"}

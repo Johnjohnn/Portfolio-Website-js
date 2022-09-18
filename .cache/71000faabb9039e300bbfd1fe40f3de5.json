@@ -1,0 +1,1 @@
+{"dependencies":[],"generated":{"js":"var ceil = Math.ceil;\nvar floor = Math.floor;\n\n// `Math.trunc` method\n// https://tc39.es/ecma262/#sec-math.trunc\n// eslint-disable-next-line es-x/no-math-trunc -- safe\nmodule.exports = Math.trunc || function trunc(x) {\n  var n = +x;\n  return (n > 0 ? floor : ceil)(n);\n};\n"},"hash":"e4f2c3ae55279f7f287795be254a9bcd"}

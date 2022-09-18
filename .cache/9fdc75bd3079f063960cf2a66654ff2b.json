@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../../modules/es.object.assign","loc":{"line":1,"column":8}},{"name":"../../internals/path","loc":{"line":2,"column":19}}],"generated":{"js":"require('../../modules/es.object.assign');\nvar path = require('../../internals/path');\n\nmodule.exports = path.Object.assign;\n"},"hash":"280e3658fd04d9a839a80b5be08d53cc"}

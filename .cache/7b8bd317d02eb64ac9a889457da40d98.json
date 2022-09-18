@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/function-uncurry-this","loc":{"line":1,"column":26}}],"generated":{"js":"var uncurryThis = require('../internals/function-uncurry-this');\n\nmodule.exports = uncurryThis({}.isPrototypeOf);\n"},"hash":"66ceb62dc0c78144ace8abf1b9b59a1b"}

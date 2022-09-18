@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/get-built-in","loc":{"line":1,"column":25}}],"generated":{"js":"var getBuiltIn = require('../internals/get-built-in');\n\nmodule.exports = getBuiltIn('navigator', 'userAgent') || '';\n"},"hash":"b6b76011f88bb4b7121d8a6b79cc49dc"}

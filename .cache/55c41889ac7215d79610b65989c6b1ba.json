@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/well-known-symbol","loc":{"line":1,"column":30}}],"generated":{"js":"var wellKnownSymbol = require('../internals/well-known-symbol');\n\nvar TO_STRING_TAG = wellKnownSymbol('toStringTag');\nvar test = {};\n\ntest[TO_STRING_TAG] = 'z';\n\nmodule.exports = String(test) === '[object z]';\n"},"hash":"2a4cc6a06953291f92c5ae70ba924563"}

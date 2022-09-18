@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../modules/es.weak-map.constructor","loc":{"line":2,"column":8}}],"generated":{"js":"// TODO: Remove this module from `core-js@4` since it's replaced to module below\nrequire('../modules/es.weak-map.constructor');\n"},"hash":"7475967edef5cbf16be4bcc0f79730f1"}

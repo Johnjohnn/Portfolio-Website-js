@@ -1927,10 +1927,10 @@ class Color {
 
     if (colorSpace !== SRGBColorSpace) {
       // Requires CSS Color Module Level 4 (https://www.w3.org/TR/css-color-4/).
-      return "color(".concat(colorSpace, " ").concat(_rgb.r, " ").concat(_rgb.g, " ").concat(_rgb.b, ")");
+      return `color(${colorSpace} ${_rgb.r} ${_rgb.g} ${_rgb.b})`;
     }
 
-    return "rgb(".concat(_rgb.r * 255 | 0, ",").concat(_rgb.g * 255 | 0, ",").concat(_rgb.b * 255 | 0, ")");
+    return `rgb(${_rgb.r * 255 | 0},${_rgb.g * 255 | 0},${_rgb.b * 255 | 0})`;
   }
 
   offsetHSL(h, s, l) {
@@ -9586,10 +9586,45 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
       },
       vertexShader:
       /* glsl */
-      "\n\n\t\t\t\tvarying vec3 vWorldDirection;\n\n\t\t\t\tvec3 transformDirection( in vec3 dir, in mat4 matrix ) {\n\n\t\t\t\t\treturn normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );\n\n\t\t\t\t}\n\n\t\t\t\tvoid main() {\n\n\t\t\t\t\tvWorldDirection = transformDirection( position, modelMatrix );\n\n\t\t\t\t\t#include <begin_vertex>\n\t\t\t\t\t#include <project_vertex>\n\n\t\t\t\t}\n\t\t\t",
+      `
+
+				varying vec3 vWorldDirection;
+
+				vec3 transformDirection( in vec3 dir, in mat4 matrix ) {
+
+					return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );
+
+				}
+
+				void main() {
+
+					vWorldDirection = transformDirection( position, modelMatrix );
+
+					#include <begin_vertex>
+					#include <project_vertex>
+
+				}
+			`,
       fragmentShader:
       /* glsl */
-      "\n\n\t\t\t\tuniform sampler2D tEquirect;\n\n\t\t\t\tvarying vec3 vWorldDirection;\n\n\t\t\t\t#include <common>\n\n\t\t\t\tvoid main() {\n\n\t\t\t\t\tvec3 direction = normalize( vWorldDirection );\n\n\t\t\t\t\tvec2 sampleUV = equirectUv( direction );\n\n\t\t\t\t\tgl_FragColor = texture2D( tEquirect, sampleUV );\n\n\t\t\t\t}\n\t\t\t"
+      `
+
+				uniform sampler2D tEquirect;
+
+				varying vec3 vWorldDirection;
+
+				#include <common>
+
+				void main() {
+
+					vec3 direction = normalize( vWorldDirection );
+
+					vec2 sampleUV = equirectUv( direction );
+
+					gl_FragColor = texture2D( tEquirect, sampleUV );
+
+				}
+			`
     };
     const geometry = new BoxGeometry(5, 5, 5);
     const material = new ShaderMaterial({
@@ -12254,7 +12289,7 @@ class PMREMGenerator {
     const samples = isFinite(sigmaRadians) ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels) : MAX_SAMPLES;
 
     if (samples > MAX_SAMPLES) {
-      console.warn("sigmaRadians, ".concat(sigmaRadians, ", is too large and will clip, as it requested ").concat(samples, " samples when the maximum is set to ").concat(MAX_SAMPLES));
+      console.warn(`sigmaRadians, ${sigmaRadians}, is too large and will clip, as it requested ${samples} samples when the maximum is set to ${MAX_SAMPLES}`);
     }
 
     const weights = [];
@@ -12386,7 +12421,7 @@ function _getBlurShader(lodMax, width, height) {
       'n': MAX_SAMPLES,
       'CUBEUV_TEXEL_WIDTH': 1.0 / width,
       'CUBEUV_TEXEL_HEIGHT': 1.0 / height,
-      'CUBEUV_MAX_MIP': "".concat(lodMax, ".0")
+      'CUBEUV_MAX_MIP': `${lodMax}.0`
     },
     uniforms: {
       'envMap': {
@@ -12414,7 +12449,67 @@ function _getBlurShader(lodMax, width, height) {
     vertexShader: _getCommonVertexShader(),
     fragmentShader:
     /* glsl */
-    "\n\n\t\t\tprecision mediump float;\n\t\t\tprecision mediump int;\n\n\t\t\tvarying vec3 vOutputDirection;\n\n\t\t\tuniform sampler2D envMap;\n\t\t\tuniform int samples;\n\t\t\tuniform float weights[ n ];\n\t\t\tuniform bool latitudinal;\n\t\t\tuniform float dTheta;\n\t\t\tuniform float mipInt;\n\t\t\tuniform vec3 poleAxis;\n\n\t\t\t#define ENVMAP_TYPE_CUBE_UV\n\t\t\t#include <cube_uv_reflection_fragment>\n\n\t\t\tvec3 getSample( float theta, vec3 axis ) {\n\n\t\t\t\tfloat cosTheta = cos( theta );\n\t\t\t\t// Rodrigues' axis-angle rotation\n\t\t\t\tvec3 sampleDirection = vOutputDirection * cosTheta\n\t\t\t\t\t+ cross( axis, vOutputDirection ) * sin( theta )\n\t\t\t\t\t+ axis * dot( axis, vOutputDirection ) * ( 1.0 - cosTheta );\n\n\t\t\t\treturn bilinearCubeUV( envMap, sampleDirection, mipInt );\n\n\t\t\t}\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec3 axis = latitudinal ? poleAxis : cross( poleAxis, vOutputDirection );\n\n\t\t\t\tif ( all( equal( axis, vec3( 0.0 ) ) ) ) {\n\n\t\t\t\t\taxis = vec3( vOutputDirection.z, 0.0, - vOutputDirection.x );\n\n\t\t\t\t}\n\n\t\t\t\taxis = normalize( axis );\n\n\t\t\t\tgl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );\n\t\t\t\tgl_FragColor.rgb += weights[ 0 ] * getSample( 0.0, axis );\n\n\t\t\t\tfor ( int i = 1; i < n; i++ ) {\n\n\t\t\t\t\tif ( i >= samples ) {\n\n\t\t\t\t\t\tbreak;\n\n\t\t\t\t\t}\n\n\t\t\t\t\tfloat theta = dTheta * float( i );\n\t\t\t\t\tgl_FragColor.rgb += weights[ i ] * getSample( -1.0 * theta, axis );\n\t\t\t\t\tgl_FragColor.rgb += weights[ i ] * getSample( theta, axis );\n\n\t\t\t\t}\n\n\t\t\t}\n\t\t",
+    `
+
+			precision mediump float;
+			precision mediump int;
+
+			varying vec3 vOutputDirection;
+
+			uniform sampler2D envMap;
+			uniform int samples;
+			uniform float weights[ n ];
+			uniform bool latitudinal;
+			uniform float dTheta;
+			uniform float mipInt;
+			uniform vec3 poleAxis;
+
+			#define ENVMAP_TYPE_CUBE_UV
+			#include <cube_uv_reflection_fragment>
+
+			vec3 getSample( float theta, vec3 axis ) {
+
+				float cosTheta = cos( theta );
+				// Rodrigues' axis-angle rotation
+				vec3 sampleDirection = vOutputDirection * cosTheta
+					+ cross( axis, vOutputDirection ) * sin( theta )
+					+ axis * dot( axis, vOutputDirection ) * ( 1.0 - cosTheta );
+
+				return bilinearCubeUV( envMap, sampleDirection, mipInt );
+
+			}
+
+			void main() {
+
+				vec3 axis = latitudinal ? poleAxis : cross( poleAxis, vOutputDirection );
+
+				if ( all( equal( axis, vec3( 0.0 ) ) ) ) {
+
+					axis = vec3( vOutputDirection.z, 0.0, - vOutputDirection.x );
+
+				}
+
+				axis = normalize( axis );
+
+				gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+				gl_FragColor.rgb += weights[ 0 ] * getSample( 0.0, axis );
+
+				for ( int i = 1; i < n; i++ ) {
+
+					if ( i >= samples ) {
+
+						break;
+
+					}
+
+					float theta = dTheta * float( i );
+					gl_FragColor.rgb += weights[ i ] * getSample( -1.0 * theta, axis );
+					gl_FragColor.rgb += weights[ i ] * getSample( theta, axis );
+
+				}
+
+			}
+		`,
     blending: NoBlending,
     depthTest: false,
     depthWrite: false
@@ -12433,7 +12528,26 @@ function _getEquirectMaterial() {
     vertexShader: _getCommonVertexShader(),
     fragmentShader:
     /* glsl */
-    "\n\n\t\t\tprecision mediump float;\n\t\t\tprecision mediump int;\n\n\t\t\tvarying vec3 vOutputDirection;\n\n\t\t\tuniform sampler2D envMap;\n\n\t\t\t#include <common>\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec3 outputDirection = normalize( vOutputDirection );\n\t\t\t\tvec2 uv = equirectUv( outputDirection );\n\n\t\t\t\tgl_FragColor = vec4( texture2D ( envMap, uv ).rgb, 1.0 );\n\n\t\t\t}\n\t\t",
+    `
+
+			precision mediump float;
+			precision mediump int;
+
+			varying vec3 vOutputDirection;
+
+			uniform sampler2D envMap;
+
+			#include <common>
+
+			void main() {
+
+				vec3 outputDirection = normalize( vOutputDirection );
+				vec2 uv = equirectUv( outputDirection );
+
+				gl_FragColor = vec4( texture2D ( envMap, uv ).rgb, 1.0 );
+
+			}
+		`,
     blending: NoBlending,
     depthTest: false,
     depthWrite: false
@@ -12454,7 +12568,23 @@ function _getCubemapMaterial() {
     vertexShader: _getCommonVertexShader(),
     fragmentShader:
     /* glsl */
-    "\n\n\t\t\tprecision mediump float;\n\t\t\tprecision mediump int;\n\n\t\t\tuniform float flipEnvMap;\n\n\t\t\tvarying vec3 vOutputDirection;\n\n\t\t\tuniform samplerCube envMap;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = textureCube( envMap, vec3( flipEnvMap * vOutputDirection.x, vOutputDirection.yz ) );\n\n\t\t\t}\n\t\t",
+    `
+
+			precision mediump float;
+			precision mediump int;
+
+			uniform float flipEnvMap;
+
+			varying vec3 vOutputDirection;
+
+			uniform samplerCube envMap;
+
+			void main() {
+
+				gl_FragColor = textureCube( envMap, vec3( flipEnvMap * vOutputDirection.x, vOutputDirection.yz ) );
+
+			}
+		`,
     blending: NoBlending,
     depthTest: false,
     depthWrite: false
@@ -12464,7 +12594,62 @@ function _getCubemapMaterial() {
 function _getCommonVertexShader() {
   return (
     /* glsl */
-    "\n\n\t\tprecision mediump float;\n\t\tprecision mediump int;\n\n\t\tattribute float faceIndex;\n\n\t\tvarying vec3 vOutputDirection;\n\n\t\t// RH coordinate system; PMREM face-indexing convention\n\t\tvec3 getDirection( vec2 uv, float face ) {\n\n\t\t\tuv = 2.0 * uv - 1.0;\n\n\t\t\tvec3 direction = vec3( uv, 1.0 );\n\n\t\t\tif ( face == 0.0 ) {\n\n\t\t\t\tdirection = direction.zyx; // ( 1, v, u ) pos x\n\n\t\t\t} else if ( face == 1.0 ) {\n\n\t\t\t\tdirection = direction.xzy;\n\t\t\t\tdirection.xz *= -1.0; // ( -u, 1, -v ) pos y\n\n\t\t\t} else if ( face == 2.0 ) {\n\n\t\t\t\tdirection.x *= -1.0; // ( -u, v, 1 ) pos z\n\n\t\t\t} else if ( face == 3.0 ) {\n\n\t\t\t\tdirection = direction.zyx;\n\t\t\t\tdirection.xz *= -1.0; // ( -1, v, -u ) neg x\n\n\t\t\t} else if ( face == 4.0 ) {\n\n\t\t\t\tdirection = direction.xzy;\n\t\t\t\tdirection.xy *= -1.0; // ( -u, -1, v ) neg y\n\n\t\t\t} else if ( face == 5.0 ) {\n\n\t\t\t\tdirection.z *= -1.0; // ( u, v, -1 ) neg z\n\n\t\t\t}\n\n\t\t\treturn direction;\n\n\t\t}\n\n\t\tvoid main() {\n\n\t\t\tvOutputDirection = getDirection( uv, faceIndex );\n\t\t\tgl_Position = vec4( position, 1.0 );\n\n\t\t}\n\t"
+    `
+
+		precision mediump float;
+		precision mediump int;
+
+		attribute float faceIndex;
+
+		varying vec3 vOutputDirection;
+
+		// RH coordinate system; PMREM face-indexing convention
+		vec3 getDirection( vec2 uv, float face ) {
+
+			uv = 2.0 * uv - 1.0;
+
+			vec3 direction = vec3( uv, 1.0 );
+
+			if ( face == 0.0 ) {
+
+				direction = direction.zyx; // ( 1, v, u ) pos x
+
+			} else if ( face == 1.0 ) {
+
+				direction = direction.xzy;
+				direction.xz *= -1.0; // ( -u, 1, -v ) pos y
+
+			} else if ( face == 2.0 ) {
+
+				direction.x *= -1.0; // ( -u, v, 1 ) pos z
+
+			} else if ( face == 3.0 ) {
+
+				direction = direction.zyx;
+				direction.xz *= -1.0; // ( -1, v, -u ) neg x
+
+			} else if ( face == 4.0 ) {
+
+				direction = direction.xzy;
+				direction.xy *= -1.0; // ( -u, -1, v ) neg y
+
+			} else if ( face == 5.0 ) {
+
+				direction.z *= -1.0; // ( u, v, -1 ) neg z
+
+			}
+
+			return direction;
+
+		}
+
+		void main() {
+
+			vOutputDirection = getDirection( uv, faceIndex );
+			gl_Position = vec4( position, 1.0 );
+
+		}
+	`
   );
 }
 
@@ -13936,7 +14121,7 @@ function handleSource(string, errorLine) {
 
   for (let i = from; i < to; i++) {
     const line = i + 1;
-    lines2.push("".concat(line === errorLine ? '>' : ' ', " ").concat(line, ": ").concat(lines[i]));
+    lines2.push(`${line === errorLine ? '>' : ' '} ${line}: ${lines[i]}`);
   }
 
   return lines2.join('\n');
@@ -19738,7 +19923,7 @@ function WebGLRenderer(parameters = {}) {
       failIfMajorPerformanceCaveat: _failIfMajorPerformanceCaveat
     }; // OffscreenCanvas does not have setAttribute, see #22811
 
-    if ('setAttribute' in _canvas) _canvas.setAttribute('data-engine', "three.js r".concat(REVISION)); // event listeners must be registered before WebGL context is created, see #12753
+    if ('setAttribute' in _canvas) _canvas.setAttribute('data-engine', `three.js r${REVISION}`); // event listeners must be registered before WebGL context is created, see #12753
 
     _canvas.addEventListener('webglcontextlost', onContextLost, false);
 
@@ -24704,9 +24889,9 @@ class EdgesGeometry extends BufferGeometry {
         _triangle.getNormal(_normal); // create hashes for the edge from the vertices
 
 
-        hashes[0] = "".concat(Math.round(a.x * precision), ",").concat(Math.round(a.y * precision), ",").concat(Math.round(a.z * precision));
-        hashes[1] = "".concat(Math.round(b.x * precision), ",").concat(Math.round(b.y * precision), ",").concat(Math.round(b.z * precision));
-        hashes[2] = "".concat(Math.round(c.x * precision), ",").concat(Math.round(c.y * precision), ",").concat(Math.round(c.z * precision)); // skip degenerate triangles
+        hashes[0] = `${Math.round(a.x * precision)},${Math.round(a.y * precision)},${Math.round(a.z * precision)}`;
+        hashes[1] = `${Math.round(b.x * precision)},${Math.round(b.y * precision)},${Math.round(b.z * precision)}`;
+        hashes[2] = `${Math.round(c.x * precision)},${Math.round(c.y * precision)},${Math.round(c.z * precision)}`; // skip degenerate triangles
 
         if (hashes[0] === hashes[1] || hashes[1] === hashes[2] || hashes[2] === hashes[0]) {
           continue;
@@ -24720,8 +24905,8 @@ class EdgesGeometry extends BufferGeometry {
           const vecHash1 = hashes[jNext];
           const v0 = _triangle[vertKeys[j]];
           const v1 = _triangle[vertKeys[jNext]];
-          const hash = "".concat(vecHash0, "_").concat(vecHash1);
-          const reverseHash = "".concat(vecHash1, "_").concat(vecHash0);
+          const hash = `${vecHash0}_${vecHash1}`;
+          const reverseHash = `${vecHash1}_${vecHash0}`;
 
           if (reverseHash in edgeData && edgeData[reverseHash]) {
             // if we found a sibling edge add it into the vertex array if
@@ -26717,8 +26902,8 @@ class WireframeGeometry extends BufferGeometry {
 exports.WireframeGeometry = WireframeGeometry;
 
 function isUniqueEdge(start, end, edges) {
-  const hash1 = "".concat(start.x, ",").concat(start.y, ",").concat(start.z, "-").concat(end.x, ",").concat(end.y, ",").concat(end.z);
-  const hash2 = "".concat(end.x, ",").concat(end.y, ",").concat(end.z, "-").concat(start.x, ",").concat(start.y, ",").concat(start.z); // coincident edge
+  const hash1 = `${start.x},${start.y},${start.z}-${end.x},${end.y},${end.z}`;
+  const hash2 = `${end.x},${end.y},${end.z}-${start.x},${start.y},${start.z}`; // coincident edge
 
   if (edges.has(hash1) === true || edges.has(hash2) === true) {
     return false;
@@ -28922,7 +29107,7 @@ class FileLoader extends Loader {
         });
         return new Response(stream);
       } else {
-        throw new HttpError("fetch for \"".concat(response.url, "\" responded with ").concat(response.status, ": ").concat(response.statusText), response);
+        throw new HttpError(`fetch for "${response.url}" responded with ${response.status}: ${response.statusText}`, response);
       }
     }).then(response => {
       switch (responseType) {
@@ -30587,7 +30772,7 @@ class ObjectLoader extends Loader {
             if (data.type in Geometries) {
               geometry = Geometries[data.type].fromJSON(data, shapes);
             } else {
-              console.warn("THREE.ObjectLoader: Unsupported geometry type \"".concat(data.type, "\""));
+              console.warn(`THREE.ObjectLoader: Unsupported geometry type "${data.type}"`);
             }
 
         }
@@ -35963,7 +36148,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65524" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

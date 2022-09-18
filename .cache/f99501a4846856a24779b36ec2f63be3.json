@@ -1,0 +1,1 @@
+{"dependencies":[],"generated":{"js":"var $String = String;\n\nmodule.exports = function (argument) {\n  try {\n    return $String(argument);\n  } catch (error) {\n    return 'Object';\n  }\n};\n"},"hash":"cc59d14825b0ea61a55f8de5b763a8e0"}

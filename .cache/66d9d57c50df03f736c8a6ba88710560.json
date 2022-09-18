@@ -1,0 +1,1 @@
+{"dependencies":[],"generated":{"js":"// `IsCallable` abstract operation\n// https://tc39.es/ecma262/#sec-iscallable\nmodule.exports = function (argument) {\n  return typeof argument == 'function';\n};\n"},"hash":"4f5e6d32ffdba7b4b095cb79d1ff7abc"}

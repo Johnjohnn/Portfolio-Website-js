@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../modules/es.set.constructor","loc":{"line":2,"column":8}}],"generated":{"js":"// TODO: Remove this module from `core-js@4` since it's replaced to module below\nrequire('../modules/es.set.constructor');\n"},"hash":"9c038ca0180a7cf459dd4706b977b4ad"}

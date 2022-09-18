@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/define-built-in","loc":{"line":1,"column":28}}],"generated":{"js":"var defineBuiltIn = require('../internals/define-built-in');\n\nmodule.exports = function (target, src, options) {\n  for (var key in src) defineBuiltIn(target, key, src[key], options);\n  return target;\n};\n"},"hash":"6f2b17614ad1965f604b667f2225e821"}

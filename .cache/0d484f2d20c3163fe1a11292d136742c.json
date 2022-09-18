@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/get-built-in","loc":{"line":1,"column":25}}],"generated":{"js":"var getBuiltIn = require('../internals/get-built-in');\n\nmodule.exports = getBuiltIn('document', 'documentElement');\n"},"hash":"1c5a958a8cb41c24b169f30d214e40cd"}

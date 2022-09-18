@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"../internals/function-bind-native","loc":{"line":1,"column":26}}],"generated":{"js":"var NATIVE_BIND = require('../internals/function-bind-native');\n\nvar call = Function.prototype.call;\n\nmodule.exports = NATIVE_BIND ? call.bind(call) : function () {\n  return call.apply(call, arguments);\n};\n"},"hash":"7b187c61549a51690930c8f310e5aa2d"}

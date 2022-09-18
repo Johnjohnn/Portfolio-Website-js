@@ -1,0 +1,1 @@
+{"dependencies":[],"generated":{"js":"// we can't use just `it == null` since of `document.all` special case\n// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec\nmodule.exports = function (it) {\n  return it === null || it === undefined;\n};\n"},"hash":"7338463afc077ccf917b4db354339720"}

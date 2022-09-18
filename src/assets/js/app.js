@@ -7,11 +7,11 @@ let c = 0;
 
 
 class DisableScrollPlugin extends ScrollbarPlugin {
-    static pluginName = 'disableScroll';
+     static pluginName = 'disableScroll';
   
-    static defaultOptions = {
+     static defaultOptions = {
       direction: '',
-    };
+     };
   
     transformDelta(delta) {
       if (this.options.direction) {
